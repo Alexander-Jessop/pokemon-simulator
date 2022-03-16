@@ -7,15 +7,19 @@ app.get("/", (req, res) => {
 });
 
 app.get("/battlegrounds", (req, res) => {
-  res.send("This is the home page");
+  res.send("Welcome to the Thunder-Dome");
 });
 
 app.get("/pokemonlist", (req, res) => {
-  res.send("This is the home page");
+  res.send("What pokemon is this?");
 });
 
 app.get("/profilepage", (req, res) => {
-  res.send("This is the home page");
+  res.send("Look at my stuff!");
+});
+
+app.get("*", (req, res) => {
+  res.send("nothing here");
 });
 
 app.listen(8080, () => {});
