@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 // console.dir(app); Display the application methods
-const port = 8080;
+const port = 3000;
 // Above sets up out express server
 const path = require("path");
 app.set("view", path.join(__dirname, "views"));
@@ -25,35 +25,10 @@ mongoose
   });
 
 app.get("/", (req, res) => {
-  res.send("This is the home page");
+  axios.get("https://pokeapi.co/api/v2/pokemon?limit=151");
 });
 
-app.get("/pokedex", (req, res) => {
-  axios
-    .get("https://pokeapi.co/api/v2/pokemon?limit=5")
-    .then((response) => {
-      const { data } = response;
-      const pokemon = data.results;
-      for (let monster in pokemon) {
-        console.log(monster);
-        console.log(pokemon[monster].url, pokemon[monster].name);
-      }
-      res.send({ pokemon });
-    })
-    .catch((e) => {
-      console.log(e);
-      console.error("error API not pulled");
-    });
-});
-
-app.get("/battlegrounds", (req, res) => {
-  res.send("This is arena");
-});
-app.get("/profile", (req, res) => {
-  res.send("This your profile");
-});
-
-app.listen(8080, () => {
+app.listen(3000, () => {
   // listens to request/posts from browsers on 8080
   console.log("Express listening on port 8080");
   // verify connection
