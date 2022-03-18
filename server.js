@@ -1,32 +1,36 @@
 const express = require("express");
 const app = express();
-// console.dir(app); Display the application methods
-const port = 8080;
-// Above sets up out express server
 const path = require("path");
-app.set("view", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-// connects the root directory to views
-const axios = require("axios");
-const mongoose = require("mongoose");
-// EJS doesn't need to be required
 
-const Userprofile = require("./signup/users.js");
+// REQUIRES
+const axios = require("axios");
+const ejsMate = require("ejs-mate");
+// const mongoose = require("mongoose");
+
+// MODELS / REQUIRES
+// const Userprofile = require("./signup/users.js");
 // importing the mongooseSchema from users.js
 
-mongoose
-  .connect("mongodb://localhost:27017/pokemon")
-  .then(() => {
-    console.log("Mongo conection open");
-  })
-  .catch((err) => {
-    console.error("Mongo error");
-    console.log(err);
-  });
+// EJS setup
+app.engine("ejs", ejsMate);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
-app.get("/", (req, res) => {
-  res.send("This is the home page");
-});
+// Middleware
+
+// Mongoose
+//   .connect("mongodb://localhost:27017/pokemon")
+//   .then(() => {
+//     console.log("Mongo conection open");
+//   })
+//   .catch((err) => {
+//     console.error("Mongo error");
+//     console.log(err);
+//   });
+
+// app.get("/", (req, res) => {
+//   res.render("index");
+// });
 
 app.get("/pokedex", async (req, res) => {
   let pokeData = [];
@@ -42,22 +46,27 @@ app.get("/pokedex", async (req, res) => {
 
     let responseTwo = await axios.get(pokeStatPage);
     const { data } = responseTwo;
-    const pokename = data.name;
+    // console.log(data);
+
+    // console.log(pokeData);
+    let pokename = data.name;
+    console.log(pokename);
+    // console.log(pokename);
     const pokeID = data.order;
+    // console.log(pokeID);
     const spritesCont = data.sprites.other["official-artwork"]["front_default"];
-    console.log(spritesCont);
 
-    // for (let i = 0, i < spritesCont.legnth, i++){
-    //   let responseThree = await axios.get(spritesOrganize[]);
-
-    // let responseThree = await axios.get(spritesOrganize);
-    // const { data } = responseThree;
-    // const pokeSprit = data;
-
-    pokeData.push(pokename, pokeID);
+    pokeData.push({
+      name: pokename,
+      id: data.id,
+      sprites: spritesCont,
+      // moves: {[data.moves[0].move.name]: data.moves[0].move.url},
+    });
+    console.log(pokeData);
   }
 
-  res.send(pokeData);
+  // res.send(pokeData);
+  res.render("pokedex", { pokeData });
 });
 
 app.get("/battlegrounds", (req, res) => {
