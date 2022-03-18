@@ -30,14 +30,18 @@ app.get("/", (req, res) => {
 
 app.get("/pokedex", (req, res) => {
   axios
-    .get("https://pokeapi.co/api/v2/pokemon?limit=5")
+    .get("https://pokeapi.co/api/v2/pokemon?limit=151")
     .then((response) => {
       const { data } = response;
       const pokemon = data.results;
       for (let monster in pokemon) {
-        console.log(monster);
-        console.log(pokemon[monster].url, pokemon[monster].name);
+        // console.log(monster);
+        // console.log(pokemon[monster].url);
+        const pokeStat = pokemon[monster].url;
+        console.log(pokeStat);
+        console.log(typeof pokeStat);
       }
+
       res.send({ pokemon });
     })
     .catch((e) => {
