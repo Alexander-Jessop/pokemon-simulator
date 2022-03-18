@@ -28,26 +28,36 @@ app.get("/", (req, res) => {
   res.send("This is the home page");
 });
 
-app.get("/pokedex", (req, res) => {
-  axios
-    .get("https://pokeapi.co/api/v2/pokemon?limit=151")
-    .then((response) => {
-      const { data } = response;
-      const pokemon = data.results;
-      for (let monster in pokemon) {
-        // console.log(monster);
-        // console.log(pokemon[monster].url);
-        const pokeStat = pokemon[monster].url;
-        console.log(pokeStat);
-        console.log(typeof pokeStat);
-      }
+app.get("/pokedex", async (req, res) => {
+  let pokeData = [];
 
-      res.send({ pokemon });
-    })
-    .catch((e) => {
-      console.log(e);
-      console.error("error API not pulled");
-    });
+  let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=5");
+  const { data } = estApi;
+  const pokemon = data.results;
+
+  for (let catagory in pokemon) {
+    // console.log(catagory);
+    // console.log(pokemon[catagory].url);
+    const pokeStatPage = pokemon[catagory].url;
+
+    let responseTwo = await axios.get(pokeStatPage);
+    const { data } = responseTwo;
+    const pokename = data.name;
+    const pokeID = data.order;
+    const spritesCont = data.sprites.other["official-artwork"]["front_default"];
+    console.log(spritesCont);
+
+    // for (let i = 0, i < spritesCont.legnth, i++){
+    //   let responseThree = await axios.get(spritesOrganize[]);
+
+    // let responseThree = await axios.get(spritesOrganize);
+    // const { data } = responseThree;
+    // const pokeSprit = data;
+
+    pokeData.push(pokename, pokeID);
+  }
+
+  res.send(pokeData);
 });
 
 app.get("/battlegrounds", (req, res) => {
