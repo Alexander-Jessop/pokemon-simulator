@@ -4,18 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1>Pokedex</h1>
-   
+
     <% for (let i = 0; i < pokeData.length; i++){%>
         <h2> <%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %>    </h2>
-
-        <p><%= pokeData[i].moves %></p>
-       
         <img src="<%= JSON.stringify(pokeData[i].sprites).replace(/\"/g, "") %>"></img>
+        <p> <%= JSON.stringify(pokeData[i].moves).replace(/\"/g, "") %>    </p>
         <%} %>
-
-        
+   
 </html>
