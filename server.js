@@ -24,7 +24,7 @@ mongoose
 
 app.get("/pokedex", async (req, res) => {
   let pokeData = [];
-  let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=10");
+  let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=5");
   const { data } = estApi;
   const pokemon = data.results;
 
@@ -35,50 +35,67 @@ app.get("/pokedex", async (req, res) => {
     let spritesCont = data.sprites.other["official-artwork"]["front_default"];
 
     pokeData.push({
+      order: data.order,
       name: pokename,
       id: data.id,
       sprites: spritesCont,
     });
-
-    // moves crap
-    //   for (let num in atk) {
-    //     let allAtkData = atk[num].move.name;
-    //     movesData.push(allAtkData);
-    //   }
   }
   res.render("pokedex", { pokeData });
 });
 
 app.get("/pokedex/:id", async (req, res) => {
   const pokeID = req.params.id;
-
   const pokeStatPage = `https://pokeapi.co/api/v2/pokemon/${pokeID}`;
   const pokeData = [];
+  const movesData = [];
+  const opponentsData = [];
+
   let response = await axios.get(pokeStatPage);
   const { data } = response;
   const pokemon = data;
   const spritesCont =
     pokemon.sprites.other["official-artwork"]["front_default"];
-
-  // get moves from data
   const moves = pokemon.moves;
-  const movesData = [];
-  for (let num in moves) {
-    let allAtkData = moves[num].move.name;
-    movesData.push(allAtkData);
-  }
 
+  async function secondCall() {
+    let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=5");
+    let { data } = estApi;
+    let pokemon2 = data.results;
+
+    for (let i = 0; i < pokemon2.length; i++) {
+      let pokeApi = await axios.get(pokemon2[i].url);
+      const { data } = pokeApi;
+
+      let pokename = data.name;
+      opponentsData.push(pokename);
+
+      console.log(opponentsData);
+    }
+  }
+  await secondCall();
+
+  for (let i = 0; i < moves.length; i++) {
+    if (i < 10) {
+      let allAtkData = moves[i].move.name;
+      movesData.push(allAtkData);
+      console.log(movesData);
+    }
+  }
   pokeData.push({
+    order: data.order,
     name: pokemon.name,
     id: pokemon.id,
     sprites: spritesCont,
     moves: movesData,
+    opponent: opponentsData,
   });
+  console.log(pokeData);
 
   res.render("pokemonstats", { pokeData });
 });
 
-app.get("/battlegrounds", (req, res) => {
+app.post("/battlegrounds", (req, res) => {
   res.send("This is arena");
 });
 
@@ -87,10 +104,10 @@ app.get("/profile", async (req, res) => {
   res.render("profile", { userProfile });
 });
 
-app.listen(3000, () => {
+app.listen(8080, () => {
   // listens to request/posts from browsers on 8080
   console.log("Express listening on port 8080");
-  // verify connection
+  // console.log verifying connection
 });
 
 //************************** OLD CODE **********************************/

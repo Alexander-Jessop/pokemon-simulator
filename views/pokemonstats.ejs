@@ -4,14 +4,68 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>
+        <% for (let i = 0; i < pokeData.length; i++){%>
+        <%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %>    
+        <%} %>
+    </title>
+
 </head>
 <body>
 
     <% for (let i = 0; i < pokeData.length; i++){%>
         <h2> <%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %>    </h2>
         <img src="<%= JSON.stringify(pokeData[i].sprites).replace(/\"/g, "") %>"></img>
-        <p> <%= JSON.stringify(pokeData[i].moves).replace(/\"/g, "") %>    </p>
+
+        <form action="/battlegrounds" method="post">
+
+            <select id="opponents" name="opponents">
+                <% for (let i = 0; i < pokeData.length; i++){%>
+               <% for (let j = 0; j < pokeData[i].opponent.length; j++){%>
+                <option value="<%= pokeData[i].id %>"><%= JSON.stringify(pokeData[i].opponent[j]).replace(/\"/g, "") %></option>
+                <%} %>
+                <%} %>
+            </select>
+
+            <select id="pokemon" name="pokemon">
+                <% for (let i = 0; i < pokeData.length; i++){%>
+                <option value="<%= pokeData[i].id %>"><%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %></option>
+                <%} %>
+            </select>
+            
+        <% for (let j = 0; j < pokeData[i].moves.length; j++){ %>
+        <input type="checkbox" name="attack" value="<%= pokeData[i].moves[j] %>">
+        <label
+         for="<%= pokeData[i].moves[j] %>"><%= pokeData[i].moves[j] %>
+        </label>  
         <%} %>
+        <%} %>
+        <input type  = "submit" value = "Submit "onclick = "Calculate()">
+        
+        </form>
+        <p id="select">Please Select 4</p>
    
+
+
+   <script>
+   function Calculate() {
+    var a = document.getElementsByName("attack");
+    var n = 0;
+    var count;
+    for (count = 0; count < a.length; count++) {
+      if (a[count].checked === true) {
+        n = n + 1;
+      }
+    }
+    if (n > 4 || n < 4) {
+      event.preventDefault();
+      document.getElementById("select").innerHTML =
+        "Please Select ONLY 4 attacks ";
+  
+      return false;
+    }
+  }
+  </script>
+</body>
 </html>
+
