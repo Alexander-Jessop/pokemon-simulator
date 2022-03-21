@@ -50,7 +50,8 @@ app.get("/pokedex/:id", async (req, res) => {
   const pokeStatPage = `https://pokeapi.co/api/v2/pokemon/${pokeID}`;
   const pokeData = [];
   const movesData = [];
-  const opponentsData = [];
+  let opponentsData = [];
+  let opponentsSpritesArray = [];
 
   let response = await axios.get(pokeStatPage);
   const { data } = response;
@@ -69,9 +70,14 @@ app.get("/pokedex/:id", async (req, res) => {
       const { data } = pokeApi;
 
       let pokename = data.name;
-      opponentsData.push(pokename);
 
-      console.log(opponentsData);
+      let opponentsSprites =
+        data.sprites.other["official-artwork"]["front_default"];
+      // push pokename and opponentsSprites to opponentsData object array
+      opponentsData.push({
+        name: pokename,
+        sprites: opponentsSprites,
+      });
     }
   }
   await secondCall();
@@ -80,7 +86,7 @@ app.get("/pokedex/:id", async (req, res) => {
     if (i < 10) {
       let allAtkData = moves[i].move.name;
       movesData.push(allAtkData);
-      console.log(movesData);
+      // console.log(movesData);
     }
   }
   pokeData.push({
@@ -89,39 +95,17 @@ app.get("/pokedex/:id", async (req, res) => {
     id: pokemon.id,
     sprites: spritesCont,
     moves: movesData,
-    opponent: opponentsData,
+    opponent: { opponentsData },
   });
 
+  // console.log(pokeData[0].opponent.opponentsData[1].name);
   res.render("pokemonstats", { pokeData });
 });
 
-app.post("/battlegrounds", (req, res) => {
-  const { pokemon, attack, opponents } = req.body;
-  const playerOne = pokemon;
-  const ai = opponents;
-  const playOneIMG = `https://pokeapi.co/api/v2/pokemon/${playerOne}`;
-  const aiIMG = `https://pokeapi.co/api/v2/pokemon/${ai}`;
+app.post("/battlegrounds", async (req, res) => {
+  const { pokemon, attack, opponents, test } = req.body;
 
-  const pokeData = [];
-
-  let response = axios.get(playOneIMG);
-  const { data } = response;
-  const playerOnePokemon = data;
-  const spritesCont =
-    playerOnePokemon.sprites.other["official-artwork"]["front_default"];
-  const moves = playerOnePokemon.moves;
-
-  pokeData.push({
-    order: data.order,
-    name: playerOnePokemon.name,
-    id: playerOnePokemon.id,
-    sprites: spritesCont,
-    moves: movesData,
-    opponent: opponentsData,
-  });
-
-  console.log({ pokemon, attack, opponents });
-  res.render("battlegrounds", { pokemon, attack, opponents });
+  res.render("battlegrounds", { pokemon, attack, opponents, test });
 });
 
 app.get("/profile", async (req, res) => {

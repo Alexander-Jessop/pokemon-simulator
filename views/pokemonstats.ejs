@@ -24,6 +24,8 @@
             <option value="<%= pokeData[i].name %>"><%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %></option>
             <%} %>
         </select>
+        
+        <input style="display:none" type="text" name="test" value="<%= JSON.stringify(pokeData[i].sprites).replace(/\"/g, "") %>">
           
         <% for (let j = 0; j < pokeData[i].moves.length; j++){ %>
           <input type="checkbox" name="attack" value="<%= pokeData[i].moves[j] %>">
@@ -36,11 +38,10 @@
           <h3>VS</h3>         
           
           <select id="opponents" name="opponents">
-                <% for (let i = 0; i < pokeData.length; i++){%>
-               <% for (let j = 0; j < pokeData[i].opponent.length; j++){%>
-                <option value="<%= pokeData[i].opponent[j] %>"><%= JSON.stringify(pokeData[i].opponent[j]).replace(/\"/g, "") %></option>
+                <% for (let i = 0; i < pokeData[0].opponent.opponentsData.length; i++){%>
+                <option value="<%=JSON.stringify(pokeData[0].opponent.opponentsData[i]).replace(/\"/g, "") %>"><%= JSON.stringify(pokeData[0].opponent.opponentsData[i].name).replace(/\"/g, "") %></option>
                 <%} %>
-                <%} %>
+                
             </select>
 
             <input type  = "submit" value = "Submit "onclick = "Calculate()">

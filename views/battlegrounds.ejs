@@ -10,12 +10,67 @@
     <h1>Battlegrounds</h1>
     
 
-    <div><%= JSON.stringify(pokemon).replace(/\"/g, "") %></div>
     
-    <% for (let i = 0; i < attack.length; i++){%>
-        <button> <%= JSON.stringify(attack[i]).replace(/\"/g, "") %>    </button>
-   <%} %>
+    <img src="<%= JSON.stringify(test).replace(/\"/g, "") %>"></img>
 
-   <div><%= JSON.stringify(opponents).replace(/\"/g, "") %></div>
+    <% for (let i = 0; i < attack.length; i++){%>
+        <button class="some-class"> <%= JSON.stringify(attack[i]).replace(/\"/g, "") %>    </button>
+   <%} %>
+   <div class="mypokemon">
+   <p>MY POKEMON</p>
+<p id="mypokemonp">100<span>HP</span></p>
+</div>
+
+<div class="ENEMY">
+   <p>ENEMY POKEMON</p>
+<p id="enemypokemonp">100<span>HP</span></p>
+</div>
+
+
+
+
+
+   <!-- importante --> 
+    <!-- <div><= JSON.stringify(pokemon).replace(/\"/g, "") %></div> -->
+    <!-- <img src="<= JSON.stringify(test.name).replace(/\"/g, "") %>"></img> -->
+    <!-- <p>test<= opponents %> </p> -->
+   <!-- importante -->
+   <!-- <div><= opponents %></div> -->
+   
+   <script>
+function game(){
+    let mypokemon = document.getElementById("mypokemonp");
+    let enemypokemon = document.getElementById("enemypokemonp");
+    let mypokemonhp = 100;
+    let enemypokemonhp = 100;
+
+
+    document.querySelectorAll('.some-class').forEach(item => {
+    item.addEventListener('click', e => {
+        // make a math.random for 1-25
+        let randomAttack = Math.floor(Math.random() * 25) + 1;
+        enemypokemonhp = enemypokemonhp - randomAttack;
+        enemypokemon.innerHTML = enemypokemonhp + "<span>HP</span>";
+        console.log(enemypokemonhp);
+
+// computer player randomly attacks each press for up to 25
+// add delay to make it look like the computer is thinking
+        setTimeout(function(){
+            let randomAttack = Math.floor(Math.random() * 25) + 1;
+            mypokemonhp = mypokemonhp - randomAttack;
+            mypokemon.innerHTML = mypokemonhp + "<span>HP</span>";
+            console.log(mypokemonhp);
+            if(mypokemonhp <= 0){
+                alert("You Lose!");
+            }
+            if(enemypokemonhp <= 0){
+                alert("You Win!");
+            }
+        }, 1500);
+});
+});
+}
+game()
+   </script>
 </body>
 </html>
