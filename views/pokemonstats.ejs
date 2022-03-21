@@ -19,31 +19,35 @@
 
         <form action="/battlegrounds" method="post">
 
-            <select id="opponents" name="opponents">
+          <select id="pokemon" name="pokemon">
+            <% for (let i = 0; i < pokeData.length; i++){%>
+            <option value="<%= pokeData[i].name %>"><%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %></option>
+            <%} %>
+        </select>
+          
+        <% for (let j = 0; j < pokeData[i].moves.length; j++){ %>
+          <input type="checkbox" name="attack" value="<%= pokeData[i].moves[j] %>">
+          <label
+           for="<%= pokeData[i].moves[j] %>"><%= pokeData[i].moves[j] %>
+          </label>  
+          <%} %>
+          <%} %>
+          
+          <h3>VS</h3>         
+          
+          <select id="opponents" name="opponents">
                 <% for (let i = 0; i < pokeData.length; i++){%>
                <% for (let j = 0; j < pokeData[i].opponent.length; j++){%>
-                <option value="<%= pokeData[i].id %>"><%= JSON.stringify(pokeData[i].opponent[j]).replace(/\"/g, "") %></option>
+                <option value="<%= pokeData[i].opponent[j] %>"><%= JSON.stringify(pokeData[i].opponent[j]).replace(/\"/g, "") %></option>
                 <%} %>
                 <%} %>
             </select>
 
-            <select id="pokemon" name="pokemon">
-                <% for (let i = 0; i < pokeData.length; i++){%>
-                <option value="<%= pokeData[i].id %>"><%= JSON.stringify(pokeData[i].name).replace(/\"/g, "") %></option>
-                <%} %>
-            </select>
-            
-        <% for (let j = 0; j < pokeData[i].moves.length; j++){ %>
-        <input type="checkbox" name="attack" value="<%= pokeData[i].moves[j] %>">
-        <label
-         for="<%= pokeData[i].moves[j] %>"><%= pokeData[i].moves[j] %>
-        </label>  
-        <%} %>
-        <%} %>
-        <input type  = "submit" value = "Submit "onclick = "Calculate()">
-        
+            <input type  = "submit" value = "Submit "onclick = "Calculate()">
+
         </form>
         <p id="select">Please Select 4</p>
+        <a href="/pokedex">See all Pokemon</a>
    
 
 

@@ -11,6 +11,7 @@ const Userprofile = require("./signup/users.js");
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
 
 mongoose
   .connect("mongodb://localhost:27017/pokemon")
@@ -90,13 +91,15 @@ app.get("/pokedex/:id", async (req, res) => {
     moves: movesData,
     opponent: opponentsData,
   });
-  console.log(pokeData);
 
   res.render("pokemonstats", { pokeData });
 });
 
 app.post("/battlegrounds", (req, res) => {
-  res.send("This is arena");
+  const { pokemon, attack, opponents } = req.body;
+
+  console.log({ pokemon, attack, opponents });
+  res.render("battlegrounds", { pokemon, attack, opponents });
 });
 
 app.get("/profile", async (req, res) => {
