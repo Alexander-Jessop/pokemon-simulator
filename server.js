@@ -97,6 +97,28 @@ app.get("/pokedex/:id", async (req, res) => {
 
 app.post("/battlegrounds", (req, res) => {
   const { pokemon, attack, opponents } = req.body;
+  const playerOne = pokemon;
+  const ai = opponents;
+  const playOneIMG = `https://pokeapi.co/api/v2/pokemon/${playerOne}`;
+  const aiIMG = `https://pokeapi.co/api/v2/pokemon/${ai}`;
+
+  const pokeData = [];
+
+  let response = axios.get(playOneIMG);
+  const { data } = response;
+  const playerOnePokemon = data;
+  const spritesCont =
+    playerOnePokemon.sprites.other["official-artwork"]["front_default"];
+  const moves = playerOnePokemon.moves;
+
+  pokeData.push({
+    order: data.order,
+    name: playerOnePokemon.name,
+    id: playerOnePokemon.id,
+    sprites: spritesCont,
+    moves: movesData,
+    opponent: opponentsData,
+  });
 
   console.log({ pokemon, attack, opponents });
   res.render("battlegrounds", { pokemon, attack, opponents });

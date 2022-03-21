@@ -1,6 +1,0 @@
-<%= JSON.stringify(globalPokeData[pokemon].name).replace(/\"/g, "") %>
-    <img src="<%= JSON.stringify(globalPokeData[pokemon].sprites).replace(/\"/g, "") %>"></img>
-
-    <% for (let i = 0; i < attack.length; i++){%>
-     <button> <%= JSON.stringify(attack[i]).replace(/\"/g, "") %></button>
-     <% } %>
