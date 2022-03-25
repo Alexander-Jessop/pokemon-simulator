@@ -10,32 +10,27 @@
     <h1>Battlegrounds</h1>
     
 
+    <h2><%= pokemon.toUpperCase() %></h2>
     
-    <img src="<%= JSON.stringify(test).replace(/\"/g, "") %>"></img>
-
-    <% for (let i = 0; i < attack.length; i++){%>
-        <button class="some-class"> <%= JSON.stringify(attack[i]).replace(/\"/g, "") %>    </button>
-   <%} %>
-   <div class="mypokemon">
-   <p>MY POKEMON</p>
-<p id="mypokemonp">100<span>HP</span></p>
-</div>
+    <div class="mypokemon">
+ <h3 id="mypokemonp">100<span>HP</span> </h3>
+ </div>
+ 
+ <div><img src="<%= JSON.stringify(test).replace(/\"/g, "") %>"></img></div>
+ 
+ <% for (let i = 0; i < attack.length; i++){%>
+     <button class="some-class"> <%= JSON.stringify(attack[i]).replace(/\"/g, "") %>    </button>
+<%} %>
 
 <div class="ENEMY">
-   <p>ENEMY POKEMON</p>
-<p id="enemypokemonp">100<span>HP</span></p>
-</div>
+   <h2 style="text-align:right" > <%= opponents.name.toUpperCase() %> </h2>
 
+   <h3 id="enemypokemonp" style="text-align:right" >100<span>HP</span></h3>
+   </div>
 
+   <div style="text-align:right"><img  src="<%= JSON.stringify(opponents.sprites).replace(/\"/g, "") %>"></img></div>
 
-
-
-   <!-- importante --> 
-    <!-- <div><= JSON.stringify(pokemon).replace(/\"/g, "") %></div> -->
-    <!-- <img src="<= JSON.stringify(test.name).replace(/\"/g, "") %>"></img> -->
-    <!-- <p>test<= opponents %> </p> -->
-   <!-- importante -->
-   <!-- <div><= opponents %></div> -->
+   <a href="/pokedex">START OVER!</a>
    
    <script>
 function game(){
@@ -47,14 +42,12 @@ function game(){
 
     document.querySelectorAll('.some-class').forEach(item => {
     item.addEventListener('click', e => {
-        // make a math.random for 1-25
         let randomAttack = Math.floor(Math.random() * 25) + 1;
         enemypokemonhp = enemypokemonhp - randomAttack;
         enemypokemon.innerHTML = enemypokemonhp + "<span>HP</span>";
         console.log(enemypokemonhp);
 
-// computer player randomly attacks each press for up to 25
-// add delay to make it look like the computer is thinking
+
         setTimeout(function(){
             let randomAttack = Math.floor(Math.random() * 25) + 1;
             mypokemonhp = mypokemonhp - randomAttack;

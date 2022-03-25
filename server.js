@@ -25,7 +25,9 @@ mongoose
 
 app.get("/pokedex", async (req, res) => {
   let pokeData = [];
-  let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=5");
+  // Must tie limit amount to "secondCall"
+  // limit allows you to access how many pokemon load. Smaller is faster larger is longer
+  let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=25");
   const { data } = estApi;
   const pokemon = data.results;
 
@@ -61,7 +63,8 @@ app.get("/pokedex/:id", async (req, res) => {
   const moves = pokemon.moves;
 
   async function secondCall() {
-    let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=5");
+    // Must tie limit amount to "/pokedex"
+    let estApi = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=25");
     let { data } = estApi;
     let pokemon2 = data.results;
 
@@ -73,7 +76,6 @@ app.get("/pokedex/:id", async (req, res) => {
 
       let opponentsSprites =
         data.sprites.other["official-artwork"]["front_default"];
-      // push pokename and opponentsSprites to opponentsData object array
       opponentsData.push({
         name: pokename,
         sprites: opponentsSprites,
@@ -103,7 +105,12 @@ app.get("/pokedex/:id", async (req, res) => {
 });
 
 app.post("/battlegrounds", async (req, res) => {
-  const { pokemon, attack, opponents, test } = req.body;
+  let { pokemon, attack, opponents, test } = req.body;
+  opponents = JSON.parse(opponents);
+
+  // console.log("pokemon:", pokemon);
+  // console.log(opponents);
+  // console.log(opponents.name);
 
   res.render("battlegrounds", { pokemon, attack, opponents, test });
 });

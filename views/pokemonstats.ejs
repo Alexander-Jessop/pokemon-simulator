@@ -34,12 +34,13 @@
           </label>  
           <%} %>
           <%} %>
-          
+          <p id="select">Please Select 4 ATTACKS</p>
           <h3>VS</h3>         
-          
+          <p>Choose your opponent</p>
           <select id="opponents" name="opponents">
+            
                 <% for (let i = 0; i < pokeData[0].opponent.opponentsData.length; i++){%>
-                <option value="<%=JSON.stringify(pokeData[0].opponent.opponentsData[i]).replace(/\"/g, "") %>"><%= JSON.stringify(pokeData[0].opponent.opponentsData[i].name).replace(/\"/g, "") %></option>
+                <option value="<%=JSON.stringify(pokeData[0].opponent.opponentsData[i]) %>"><%= JSON.stringify(pokeData[0].opponent.opponentsData[i].name).replace(/\"/g, "") %></option>
                 <%} %>
                 
             </select>
@@ -47,8 +48,8 @@
             <input type  = "submit" value = "Submit "onclick = "Calculate()">
 
         </form>
-        <p id="select">Please Select 4</p>
-        <a href="/pokedex">See all Pokemon</a>
+        
+        <a href="/pokedex">Return to Pokedex</a>
    
 
 
